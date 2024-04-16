@@ -35,7 +35,7 @@ public class MovieController : ControllerBase
             };
             movieGetDTOs.Add(movieGetDTO);
         }
-        return Ok(await _homeTaskApiDbContext.Movies.ToListAsync());
+        return Ok(movieGetDTOs);
     }
 
     [HttpGet("{id}")]
