@@ -62,4 +62,37 @@ public class GenreController : ControllerBase
         await _homeTaskApiDbContext.SaveChangesAsync();
         return Ok();
     }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Update(int id, GenrePutDTO genrePutDTO)
+    {
+        var genre = await _homeTaskApiDbContext.Genres.FindAsync(id);
+        if (genre == null)
+        {
+            return NotFound();
+        }
+
+        genre.Name = genrePutDTO.Name;
+        genre.IsDeleted = genrePutDTO.IsDeleted;
+        genre.UpdatedDate = DateTime.UtcNow.AddHours(4);
+
+        await _homeTaskApiDbContext.SaveChangesAsync();
+
+        return Ok();
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var genre = await _homeTaskApiDbContext.Genres.FindAsync(id);
+        if (genre == null)
+        {
+            return NotFound();
+        }
+
+        _homeTaskApiDbContext.Genres.Remove(genre);
+        await _homeTaskApiDbContext.SaveChangesAsync();
+
+        return Ok();
+    }
 }

@@ -72,4 +72,41 @@ public class MovieController : ControllerBase
         await _homeTaskApiDbContext.SaveChangesAsync();
         return Ok();
     }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Update(int id, MoviePutDTO moviePutDTO)
+    {
+        var movie = await _homeTaskApiDbContext.Movies.FindAsync(id);
+        if (movie == null)
+        {
+            return NotFound();
+        }
+
+        movie.Name = moviePutDTO.Name;
+        movie.Desc = moviePutDTO.Desc;
+        movie.Price = moviePutDTO.Price;
+        movie.CostPrice = moviePutDTO.CostPrice;
+        movie.GenreId = moviePutDTO.GenreId;
+        movie.IsDeleted = moviePutDTO.IsDeleted;
+        movie.UpdatedDate = DateTime.UtcNow.AddHours(4);
+
+        await _homeTaskApiDbContext.SaveChangesAsync();
+
+        return Ok();
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var movie = await _homeTaskApiDbContext.Movies.FindAsync(id);
+        if (movie == null)
+        {
+            return NotFound();
+        }
+
+        _homeTaskApiDbContext.Movies.Remove(movie);
+        await _homeTaskApiDbContext.SaveChangesAsync();
+
+        return Ok();
+    }
 }
