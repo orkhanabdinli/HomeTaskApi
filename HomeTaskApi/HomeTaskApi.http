@@ -1,0 +1,6 @@
+@HomeTaskApi_HostAddress = http://localhost:5079
+
+GET {{HomeTaskApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
